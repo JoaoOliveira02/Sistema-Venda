@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Cliente";
+}
+
+<h2>Cliente</h2>
+<hr />
+
+@model SistemaVenda.Models.ClienteViewModel
+
+@{
+    var disabled = (Model.Codigo == null) ? "disabled" : string.Empty;
+}
+
+<form asp-asp-controller="Cliente" asp-action="Cadastro" method="post">
+    <input type="hidden" asp-for="Codigo" value="@Model.Codigo" />
+
+    <div class="form-group">
+        <div class="col-4">
+            <label>Nome</label>
+            <input asp-for="Nome" type="text" value="@Model.Nome" class="form-control" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-4">
+            <label>CNPJ/CPF</label>
+            <input asp-for="CNPJ_CPF" type="text" value="@Model.CNPJ_CPF" class="form-control cnpj-cpf" />
+            <span asp-validation-for="CNPJ_CPF" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-4">
+            <label>Email</label>
+            <input asp-for="Email" type="email" value="@Model.Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-4">
+            <label>Celular</label>
+            <input asp-for="Celular" type="text" value="@Model.Celular" class="form-control" />
+            <span asp-validation-for="Celular" class="text-danger"></span>
+        </div>
+    </div>
+
+    <br />
+    <div class="col">
+        <button type="button" class="btn btn-info" onclick="Novo()">Novo</button>
+        <button type="submit" class="btn btn-success">Gravar</button>
+        <button type="button" class="btn btn-warning" onclick="Listagem()">Listagem</button>
+        <button type="button" class="btn btn-danger" onclick="Excluir(@Model.Codigo)" @disabled>Excluir</button>
+    </div>
+
+
+</form>
+
+<script>
+    var options = {
+        onKeyPress: function (cpfcnpj, e, field, options) {
+            var masks = ['000.000.000-00'];
+            var mask = (cpfcnpj.replace(/\D/g, '').length > 11) ? '' : '000.000.000-00';
+            $('.cnpj-cpf').mask(mask, options);
+        }
+    };
+    $('.cnpj-cpf').mask('000.000.000-00', options); // Inicialmente máscara de CPF
+
+    function Novo() {
+        Request("Cadastro");
+    }
+
+    function Listagem() {
+        Request("");
+    }
+
+    function Excluir(Codigo) {
+        Request("Excluir\\" + Codigo);
+    }
+
+    function Request(request) {
+        window.location = window.origin + "\\Cliente\\" + request;
+    }
+</script>
